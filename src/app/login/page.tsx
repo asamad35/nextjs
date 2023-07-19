@@ -28,6 +28,20 @@ export default function LoginPage() {
     }
   };
 
+  const forgotPassword = async () => {
+    try {
+      console.log(user, !user.email);
+      if (!user.email) {
+        toast.error("Email is required");
+        return;
+      }
+      const response = await axios.post("/api/users/forgotpassword", user);
+      toast.success(response.data.message);
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     if (user.email.length > 0 && user.password.length > 0) {
       setButtonDisabled(false);
@@ -66,6 +80,13 @@ export default function LoginPage() {
         {buttonDisabled ? "No login" : "Login"}
       </button>
       <Link href="/signup">Visit Signup page</Link>
+      <p
+        className="cursor-pointer mt-2 bg-orange-500 p-2 rounded-xl"
+        onClick={forgotPassword}
+      >
+        {" "}
+        Forgot password{" "}
+      </p>
     </div>
   );
 }

@@ -15,7 +15,6 @@ export const sendEmail= async({email,emailType,userId}: any)=>{
         }
         else if(emailType === emailEnum.Reset){
             await  User.findByIdAndUpdate(userId,{forgetPasswordToken:hashedToken,forgetPasswordExpiry: Date.now() +3600000})
-
         }
 
         var transport = nodemailer.createTransport({
@@ -31,7 +30,7 @@ export const sendEmail= async({email,emailType,userId}: any)=>{
             from: 'samad.abdus3535@gmail.com',
             to: email,
             subject: emailType === emailEnum.Verify ? "Verify your email" : "Reset your password",
-            html: `<p>Click <a href="${process.env.DOMAIN}/verifyemail?token=${hashedToken}">here</a> to ${emailType === "VERIFY" ? "verify your email" : "reset your password"}
+            html: `<p>Click <a href="${process.env.DOMAIN}/${emailType === emailEnum.Verify ? 'verifyemail' : 'forgotpassword' }?token=${hashedToken}">here</a> to ${emailType === "VERIFY" ? "verify your email" : "reset your password"}
             or copy and paste the link below in your browser. <br> ${process.env.DOMAIN}/verifyemail?token=${hashedToken}
             </p>`
         }
